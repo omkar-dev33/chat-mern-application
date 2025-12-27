@@ -1,6 +1,8 @@
 import User from '../models/usermodel.js'
 import bcrypt from 'bcrypt'
 import { generateToken } from '../lib/utils.js'
+import cloudinary from '../lib/cloudinary.js';
+
 export const signUp = async (req, res) => {
     const { fullname, password, email } = req.body;
 
@@ -83,6 +85,42 @@ export const logOut = (req, res) => {
     }
     // res.send("logout successfully");
 }
+
+export const updateProfile = async (req, res) => {
+    try {
+
+        const { profilPic } = req.body;
+        const userId = req.user._id;
+
+        const uploadResponse = await cloudinary.uploader.upload(profilePic);
+
+        const updateUser = await User.findByIdAndUpdate(
+            userId,
+            { profilPic: uploadResponse.secure_url },
+            { new: true }
+        );
+
+        res.status(200).json(updateUser);
+    } catch (error) {
+        console.log("Error in update middleware", error.message);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+export const checkAuth = (req, res) => {  
+    try {
+
+        res.status(200).json(req.user);
+    } catch (error) {
+        console.log("Error in update middleware", error.message);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+
+
+
+
 
 
 
