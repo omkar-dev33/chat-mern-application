@@ -3,3 +3,5 @@ export const SettingPage = () => {
         <div>Setting</div>
     )
 }
+
+
