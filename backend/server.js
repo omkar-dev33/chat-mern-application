@@ -11,7 +11,6 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json());
-app.use(cookieParser());
 app.use(
     cors({
         origin: "http://localhost:5173",
@@ -19,8 +18,7 @@ app.use(
     })
 );
 
-
-
+app.use(cookieParser());
 app.use('/api/auth', authService);
 app.use('/api/messages', messageRoute);
 app.listen(PORT, () => {

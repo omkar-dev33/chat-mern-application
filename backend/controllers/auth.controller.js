@@ -65,8 +65,9 @@ export const login = async (req, res) => {
             _id: user._id,
             fullname: user.fullname,
             email: user.email,
-            profilePuc: user.profilePic
+            profilePic: user.profilePic
         });
+
     } catch (error) {
         console.log("Error in login controller", error.message);
         res.status(500).json({ messsage: "Internal server error" });
@@ -107,10 +108,10 @@ export const updateProfile = async (req, res) => {
     }
 }
 
-export const checkAuth = (req, res) => {  
+export const checkAuth = (req, res) => {
     try {
-
         res.status(200).json(req.user);
+        // console.log('Cookies received:', req.user);
     } catch (error) {
         console.log("Error in update middleware", error.message);
         res.status(500).json({ message: "Internal server error" });
