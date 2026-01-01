@@ -9,7 +9,6 @@ router.post("/login", login)
 
 router.post("/logout", logOut)
 
-
 router.put("/update-profile", protectRoute, updateProfile);
 
 router.get("/check", protectRoute, checkAuth);

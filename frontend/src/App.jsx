@@ -9,6 +9,7 @@ import { ProfilePage } from './pages/ProfilePage.jsx'
 import { useAuthStore } from './store/useAuthStore.js'
 import { useEffect } from 'react'
 import { Loader } from 'lucide-react'
+import { Toaster } from "react-hot-toast";
 import './App.css'
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore()
@@ -36,6 +37,7 @@ function App() {
         <Route path='/setting' element={<SettingPage />} />
         <Route path='/profile' element={authUser ? <profilePage /> : <Navigate to="/login" />} />
       </Routes>
+      <Toaster />
     </div>
   )
 }
