@@ -9,7 +9,7 @@ import { ProfilePage } from './pages/ProfilePage.jsx'
 import { useAuthStore } from './store/useAuthStore.js'
 import { useEffect } from 'react'
 import { Loader } from 'lucide-react'
-
+import './App.css'
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore()
   useEffect(() => {
