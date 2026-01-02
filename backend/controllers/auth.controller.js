@@ -4,7 +4,7 @@ import { generateToken } from '../lib/utils.js'
 import cloudinary from '../lib/cloudinary.js';
 
 export const signUp = async (req, res) => {
-    const { fullname, password, email } = req.body;
+    const { fullname, email, password } = req.body;
 
     try {
         if (!fullname || !password || !email) return res.status(400).json({ message: "All fields are required" });
@@ -90,14 +90,14 @@ export const logOut = (req, res) => {
 export const updateProfile = async (req, res) => {
     try {
 
-        const { profilPic } = req.body;
+        const { profilePic } = req.body;
         const userId = req.user._id;
 
         const uploadResponse = await cloudinary.uploader.upload(profilePic);
 
         const updateUser = await User.findByIdAndUpdate(
             userId,
-            { profilPic: uploadResponse.secure_url },
+            { profilePic: uploadResponse.secure_url },
             { new: true }
         );
 
