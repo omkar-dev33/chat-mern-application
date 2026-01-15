@@ -1,10 +1,11 @@
 import express from 'express'
 import User from '../models/usermodel.js'
 import Message from '../models/messageModel.js'
+import cloudinary from '../lib/cloudinary.js'
 
 const getUsersForSidebar = async (req, res) => {
     try {
-        const { loginInUserId } = req.user._id;
+        const loginInUserId = req.user._id;
         const filteredUsers = await User.find({ _id: { $ne: loginInUserId } }).select("-password");
         res.status(200).json(filteredUsers);
     } catch (error) {
@@ -22,8 +23,8 @@ const getMessage = async (req, res) => {
         const messages = await Message.find(
             {
                 $or: [
-                    { senderId: myId, receiverId: userToChatId },
-                    { senderId: userToChatId, receiverId: myId },
+                    { senderId: myId, recieverId: userToChatId },
+                    { senderId: userToChatId, recieverId: myId },
                 ],
             }
         );
@@ -37,7 +38,7 @@ const getMessage = async (req, res) => {
 const sendMessage = async (req, res) => {
     try {
         const { text, image } = req.body;
-        const { id: receiverId } = req.params;
+        const { id: recieverId } = req.params;
         const senderId = req.user._id;
 
         let imageUrl;
@@ -48,7 +49,7 @@ const sendMessage = async (req, res) => {
 
         const newMessage = new Message({
             senderId,
-            receiverId,
+            recieverId,
             text,
             image: imageUrl
         })
