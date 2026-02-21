@@ -21,6 +21,7 @@ app.use(
 );
 
 app.use('/api/auth', authService);
+// console.log("Auth start ", authService);
 app.use('/api/messages', messageRoute);
 
 connectDB();
