@@ -7,7 +7,7 @@ import MessageSkeleton from '../component/skeletons/MessageSkeleton';
 import { useAuthStore } from '../store/useAuthStore'
 const ChatContainer = () => {
 
-  const { messages, getMessages, isMessageLoading, selectedUser, subscribeToMessages, unsubscribeFromMessages } = useChatStore();
+  const { messages, getMessages, isMessageLoading, selectedUser } = useChatStore();
 
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
@@ -15,11 +15,8 @@ const ChatContainer = () => {
 
   useEffect(() => {
     getMessages(selectedUser._id);
-    subscribeToMessages();
 
-    return () => unsubscribeFromMessages();
-
-  }, [selectedUser._id, getMessages, subscribeToMessages, unsubscribeFromMessages]);
+  }, [selectedUser._id, getMessages]);
 
   if (isMessageLoading) {
     <div className="flex-1 flex flex-col overflow-auto">
@@ -34,11 +31,12 @@ const ChatContainer = () => {
       <ChatHeader />
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {
-          messages.map((message) => {
+          messages.map((message) => (
             <div
               key={message._id}
-              className={`chat `}
+              className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}
               ref={messageEndRef}
+
             >
               <div className="chat-image avatar">
                 <div className="size-10 rounded-full border">
@@ -50,7 +48,7 @@ const ChatContainer = () => {
                 </div>
               </div>
 
-              <div className="chat-header">
+              <div className="chat-header mb-1">
                 <time className="text-xs opacity-50 ml-1">
                   {formatMessageTime(message.createdAt)}
                 </time>
@@ -58,12 +56,12 @@ const ChatContainer = () => {
 
               <div className="chat-bubble flex flex-col">
                 {message.image && (
-                  <img src="" alt="Attachment" className="sm:max-w-[200px] rounded-md mb-2" />
+                  <img src={message.image} alt="Attachment" className="sm:max-w-[200px] rounded-md mb-2" />
                 )}
                 {message.text && <p>{message.text}</p>}
               </div>
             </div>
-          })
+          ))
         }
       </div>
 
